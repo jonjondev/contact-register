@@ -1,5 +1,8 @@
-import fnmatch
 from models.Contact import Contact
+import serialisation
+import fnmatch
+import display
+import helpers
 
 
 # Initialise contact list
@@ -20,23 +23,26 @@ def list_contacts() -> None:
 
 
 def search_contacts() -> None:
-    contact_fields = {"name", "address", "phone"}
-    field = input(f'Field ({"/".join(contact_fields)}): ')
+    query_fields = Contact.supported_search_fields
+    helpers.display_command_options(query_fields, "Query field options:")
+    field = int(input(f'Field: '))  # TODO fix explicit int conversion
     query = input("Query: ")
-    matches = fnmatch.filter([getattr(contact, field) for contact in contacts], query)
+    matches = fnmatch.filter([getattr(contact, query_fields[field]) for contact in contacts], query)
     [print(contact) for contact in matches]
 
 
 def display_contacts() -> None:
-    display_formats = {"text", "html"}
-    display_format = input(f'Format ({"/".join(display_formats)}): ')
-    print(f'<display all contacts in {display_format}>')
+    display_formats = display.get_formats()
+    helpers.display_command_options(display_formats, "Display format options:")
+    display_format = int(input(f'Format: '))  # TODO fix explicit int conversion
+    print(f'<display all contacts in {display_formats[display_format]}>')
 
 
 def export_contacts() -> None:
-    export_formats = {"csv", "json"}
-    export_format = input(f'Format ({"/".join(export_formats)}): ')
-    print(f'<export all contacts to {export_format}>')
+    export_formats = serialisation.get_formats()
+    helpers.display_command_options(export_formats, "Export format options:")
+    export_format = int(input(f'Format: '))  # TODO fix explicit int conversion
+    print(f'<export all contacts to {export_formats[export_format]}>')
 
 
 def view_help() -> None:
@@ -50,6 +56,7 @@ def run_interactive():
         command = input("Type a command: ")
 
         # Match the supplied command to its relevant interactive functionality
+        # TODO update to separate "API" methods from interactive functions
         if command in {"add contact", "add"}:
             add_contact()
         elif command in {"list contacts", "list"}:
@@ -70,5 +77,6 @@ def run_interactive():
             print(f'No such command "{command}", type "?" for a list of available commands')
 
 
+# Run module as script if is invoked as main
 if __name__ == '__main__':
     run_interactive()

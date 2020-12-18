@@ -7,6 +7,8 @@ class Contact:
     ...
     Attributes
     ----------
+    supported_search_fields : [str]
+        a list of fields that support searching
     name : str
         the name of the contact
     address : str
@@ -19,6 +21,8 @@ class Contact:
     says(sound=None)
         Prints the animals name and what sound it makes
     """
+
+    supported_search_fields = ["name", "address", "phone"]
 
     def __init__(self, name, address, phone):
         """

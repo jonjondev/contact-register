@@ -29,6 +29,7 @@ def export(contacts) -> str:
     str
         the name of the export file
     """
+    # TODO Comment this function
     with open(DATA_FILE, 'w', newline='') as file:
         wr = csv.writer(file, quoting=csv.QUOTE_ALL)
         wr.writerow(models.Contact.Contact.supported_search_fields)

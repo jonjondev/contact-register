@@ -28,6 +28,7 @@ def export(contacts) -> str:
     str
         the name of the export file
     """
+    # TODO Comment this function
     with open(DATA_FILE, 'w', newline='') as file:
         json.dump([contact.to_dict() for contact in contacts], file, indent=4)
     return DATA_FILE

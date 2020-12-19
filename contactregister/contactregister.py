@@ -33,81 +33,116 @@ contacts = []
 
 
 def add_contact(name, address, phone) -> Contact:
+    # Create a new contact, add it to the list, and return it
     contact = Contact(name, address, phone)
     contacts.append(contact)
     return contact
 
 
 def get_all_contacts() -> [Contact]:
+    # Return all contacts
     return contacts
 
 
 def search_contacts(query_field, query) -> [Contact]:
+    # TODO Comment this function
+    # TODO Potentially implement different query format?
     return fnmatch.filter([getattr(contact, query_field) for contact in contacts], query)
 
 
 def display_contacts(display_format) -> None:
+    # TODO Comment this function
     importlib.import_module(f'display.{display_format}').display(contacts)
 
 
 def export_contacts(export_format) -> str:
+    # TODO Comment this function
     return importlib.import_module(f'serialisation.{export_format}').export(contacts)
 
 
 def run_interactive_session():
+    """
+    A module function to start an interactive CLI session to operate
+    the script's API functionality, defining the following commands:
+        * add - add a new contact
+        * list - list all contacts
+        * search - filter contacts via globbing
+        * display - display contacts in a specified format
+        * export - export contacts to a specified format
+        * help/? - display help information
+        * quit/q - quit the interactive session
+    """
+
+    # Display session header text for user
+    print('ContactRegister 1.0.0 (interactive console session)\n'
+          'Type "help" or "?" for more information.')
+
     # Run the loop while receiving user input
     while True:
         # Get a user-supplied command as a string
-        command = input("Type a command: ")
+        command = input("Type a command: ").strip()
 
         # Match the supplied command to its relevant interactive functionality:
         # ADD CONTACT
-        if command in {"add contact", "add"}:
-            name = input("Name: ")
-            address = input("Address: ")
-            phone = input("Phone: ")
+        # TODO comment this function's body
+        if command == "add":
+            name = input("Name: ").strip()
+            address = input("Address: ").strip()
+            phone = input("Phone: ").strip()
             contact = add_contact(name, address, phone)
             print(f'Successfully added new contact: {contact}')
 
         # LIST ALL CONTACTS
-        elif command in {"list contacts", "list"}:
+        elif command == "list":
             [print(contact) for contact in get_all_contacts()]
 
         # SEARCH CONTACTS
-        elif command in {"search contacts", "search"}:
+        elif command == "search":
             query_fields = Contact.supported_search_fields
             helpers.display_command_options(query_fields, "Query field options:")
-            field = int(input(f'Field: '))  # TODO fix explicit int conversion
-            query = input("Query: ")
-            [print(contact) for contact in search_contacts(query_fields[field], query)]
+            selected_field = helpers.get_option_selection(query_fields, prompt="Field: ")
+            query = input("Query: ").strip()
+            [print(contact) for contact in search_contacts(selected_field, query)]
 
         # DISPLAY CONTACTS
-        elif command in {"display contacts", "display"}:
+        elif command == "display":
             display_formats = display.get_formats()
             helpers.display_command_options(display_formats, "Display format options:")
-            display_format = int(input(f'Format: '))  # TODO fix explicit int conversion
-            display_contacts(display_formats[display_format])
+            selected_format = helpers.get_option_selection(display_formats, prompt="Format: ")
+            display_contacts(selected_format)
 
         # EXPORT CONTACTS
-        elif command in {"export contacts", "export"}:
+        elif command == "export":
             export_formats = serialisation.get_formats()
             helpers.display_command_options(export_formats, "Export format options:")
-            export_format = int(input(f'Format: '))  # TODO fix explicit int conversion
-            export_file = export_contacts(export_formats[export_format])
+            selected_format = helpers.get_option_selection(export_formats, prompt="Format: ")
+            export_file = export_contacts(selected_format)
             print(f'Exported {len(contacts)} contacts to {export_file}')
 
         # VIEW HELP
         elif command in {"help", "?"}:
-            print("<display list of available commands>")
+            # Display help menu text
+            print("------------------------------ HELP MENU ------------------------------\n"
+                  "The following commands are provided by this program:\n"
+                  "    * add     - ADD CONTACT: add a new contact\n"
+                  "    * list    - LIST ALL CONTACTS: view all contacts\n"
+                  "    * search  - SEARCH CONTACTS: search through contacts with globbing\n"
+                  "    * display - DISPLAY CONTACTS: display contacts in a given format\n"
+                  "    * export  - EXPORT CONTACTS: export contacts to a given format\n"
+                  "    * ?/help  - HELP: open help page\n"
+                  "    * q/quit  - QUIT: quit the interactive session\n")
 
         # QUIT
         elif command in {"quit", "q"}:
+            # Exit the session loop
             break
 
         # DEFAULT CASES
         elif command == "":
+            # Notify the user of blank input
             print('Need help? Type "?" for a list of available commands')
         else:
+            # Notify the user of unknown input
             print(f'No such command "{command}", type "?" for a list of available commands')
 
 

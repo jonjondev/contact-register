@@ -36,6 +36,11 @@ class Contact:
             the contact's address (default is NULL_FIELD string)
         phone : str
             the contact's phone number (default is NULL_FIELD string)
+        ...
+        Returns
+        -------
+        Contact
+            a new Contact object
         """
         self.name = name or NULL_FIELD
         self.address = address or NULL_FIELD
@@ -44,5 +49,32 @@ class Contact:
     def __repr__(self):
         """
         Returns a string representation of the class
+        ...
+        Returns
+        -------
+        str
+            the string representation of a the object
         """
         return f'{self.name} | {self.address} | {self.phone}'
+
+    def to_dict(self) -> {str: str}:
+        """
+        Returns a dictionary representation of the class
+        ...
+        Returns
+        -------
+        {str: str}
+            a dictionary of object fields and values
+        """
+        return {"name": self.name, "address": self.address, "phone": self.phone}
+
+    def to_list(self) -> [str]:
+        """
+        Returns a list representation of the class
+        ...
+        Returns
+        -------
+        [str]
+            a list of object field values
+        """
+        return [self.name, self.address, self.phone]

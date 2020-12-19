@@ -17,6 +17,11 @@ def get_module_files(file) -> [str]:
     ----------
     file : str
         the __file__ attribute of the specified module
+    ...
+    Returns
+    -------
+    [str]
+        the list of module file names
     """
     dir_path = os.path.dirname(os.path.realpath(file))
     module_files = list(filter(lambda x: not x.startswith("__"), os.listdir(dir_path)))

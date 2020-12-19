@@ -50,8 +50,8 @@ def display_contacts(display_format) -> None:
     importlib.import_module(f'display.{display_format}').display(contacts)
 
 
-def export_contacts(export_format) -> None:
-    importlib.import_module(f'serialisation.{export_format}').export(contacts)
+def export_contacts(export_format) -> str:
+    return importlib.import_module(f'serialisation.{export_format}').export(contacts)
 
 
 def run_interactive_session():
@@ -93,7 +93,8 @@ def run_interactive_session():
             export_formats = serialisation.get_formats()
             helpers.display_command_options(export_formats, "Export format options:")
             export_format = int(input(f'Format: '))  # TODO fix explicit int conversion
-            export_contacts(export_formats[export_format])
+            export_file = export_contacts(export_formats[export_format])
+            print(f'Exported {len(contacts)} contacts to {export_file}')
 
         # VIEW HELP
         elif command in {"help", "?"}:

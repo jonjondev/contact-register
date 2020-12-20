@@ -20,5 +20,5 @@ def display(contacts) -> None:
     contacts : [Contact]
         a list of contact objects to display
     """
-    # TODO Comment this function
+    # Convert contact objects to lists and display them in table format using tabulate
     print(tabulate([contact.to_list() for contact in contacts], headers=Contact.supported_search_fields))

@@ -15,11 +15,13 @@ class Contact:
         the contact's address
     phone : str
         the contact's phone number
-
+    ...
     Methods
     -------
-    says(sound=None)
-        Prints the animals name and what sound it makes
+    to_dict()
+        returns the object as a dictionary
+    to_list()
+        returns the object as a list
     """
 
     supported_search_fields = ["name", "address", "phone"]

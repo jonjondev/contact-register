@@ -33,6 +33,23 @@ contacts = []
 
 
 def add_contact(name, address, phone) -> Contact:
+    """
+    A module function to add a new contact
+    ...
+    Parameters
+    ----------
+    name : str
+        the contact's full name
+    address : str
+        the contact's address
+    phone : str
+        the contact's phone number
+    ...
+    Returns
+    -------
+    Contact
+        the newly created contact object
+    """
     # Create a new contact, add it to the list, and return it
     contact = Contact(name, address, phone)
     contacts.append(contact)
@@ -40,30 +57,55 @@ def add_contact(name, address, phone) -> Contact:
 
 
 def get_all_contacts() -> [Contact]:
+    """
+    A module function to return all contacts
+    ...
+    Returns
+    -------
+    [Contact]
+        a list of all contact objects
+    """
     # Return all contacts
     return contacts
 
 
 def search_contacts(query_field, query) -> [Contact]:
-    # TODO Comment this function
-    # TODO Potentially implement different query format?
+    # TODO implement different query format and display on multiple fields (++comment)
     return fnmatch.filter([getattr(contact, query_field) for contact in contacts], query)
 
 
 def display_contacts(display_format) -> None:
-    # TODO Comment this function
+    """
+    A module function to display all contacts
+    ...
+    Parameters
+    ----------
+    display_format : str
+        the name of the display format to use (text, html, etc.)
+    """
+    # Dynamically import the specified display format module and run its display method
     importlib.import_module(f'display.{display_format}').display(contacts)
 
 
 def export_contacts(export_format) -> str:
-    # TODO Comment this function
+    """
+    A module function to export all contacts
+    ...
+    Parameters
+    ----------
+    export_format : str
+        the name of the export format to use (csv, json, etc.)
+    """
+    # Dynamically import the specified export format module and run its export method
     return importlib.import_module(f'serialisation.{export_format}').export(contacts)
 
 
 def run_interactive_session():
     """
     A module function to start an interactive CLI session to operate
-    the script's API functionality, defining the following commands:
+    the script's API functionality.
+
+    The function defines the following commands:
         * add - add a new contact
         * list - list all contacts
         * search - filter contacts via globbing
@@ -82,30 +124,38 @@ def run_interactive_session():
         # Get a user-supplied command as a string
         command = input("Type a command: ").strip()
 
-        # Match the supplied command to its relevant interactive functionality:
+        # Match the supplied command to its relevant interactive functionality
         # ADD CONTACT
-        # TODO comment this function's body
         if command == "add":
+            # Get contact info from user input
             name = input("Name: ").strip()
             address = input("Address: ").strip()
             phone = input("Phone: ").strip()
+            # Create the contact and notify the user
             contact = add_contact(name, address, phone)
             print(f'Successfully added new contact: {contact}')
 
         # LIST ALL CONTACTS
         elif command == "list":
-            [print(contact) for contact in get_all_contacts()]
+            # Get a list of all contacts and display them
+            all_contacts = get_all_contacts()
+            print(f'Showing {len(all_contacts)} contacts...')
+            [print(contact) for contact in all_contacts]
 
         # SEARCH CONTACTS
         elif command == "search":
+            # TODO comment this section
             query_fields = Contact.supported_search_fields
             helpers.display_command_options(query_fields, "Query field options:")
             selected_field = helpers.get_option_selection(query_fields, prompt="Field: ")
             query = input("Query: ").strip()
-            [print(contact) for contact in search_contacts(selected_field, query)]
+            results = search_contacts(selected_field, query)
+            print(f'Showing {len(results)} results...')
+            [print(contact) for contact in results]
 
         # DISPLAY CONTACTS
         elif command == "display":
+            # TODO comment this section
             display_formats = display.get_formats()
             helpers.display_command_options(display_formats, "Display format options:")
             selected_format = helpers.get_option_selection(display_formats, prompt="Format: ")
@@ -113,6 +163,7 @@ def run_interactive_session():
 
         # EXPORT CONTACTS
         elif command == "export":
+            # TODO comment this section
             export_formats = serialisation.get_formats()
             helpers.display_command_options(export_formats, "Export format options:")
             selected_format = helpers.get_option_selection(export_formats, prompt="Format: ")

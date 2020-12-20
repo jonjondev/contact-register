@@ -23,9 +23,11 @@ def get_module_files(file) -> [str]:
     [str]
         the list of module file names
     """
-    # TODO Comment this function
+    # Get the directory of the file
     dir_path = os.path.dirname(os.path.realpath(file))
+    # Get all files in the directory and filter out Python standard module files
     module_files = list(filter(lambda x: not x.startswith("__"), os.listdir(dir_path)))
+    # Return filenames stripped of extension
     return [filename.strip('.py') for filename in module_files]
 
 
@@ -40,7 +42,7 @@ def display_command_options(options, title="Options:") -> None:
     title : str
         a title for the command option display (default is "Options:")
     """
-    # TODO Comment this function
+    # Display the title, followed by a list of enumerated options
     print(title)
     [print(f'{i}: {options[i]}') for i in range(0, len(options))]
 
@@ -56,15 +58,24 @@ def get_option_selection(options, prompt="Option: ") -> str:
         a list of options that the user may select
     prompt : str
         a prompt to display (default is "Option: ")
+    ...
+    Returns
+    -------
+    str
+        the option name as a string
     """
-    # TODO Comment this function
+    # Loop until receiving valid input
     selected_option = None
-    while not selected_option:
+    while selected_option is None:
         try:
+            # Get user input as an integer
             selected_option = int(input(prompt).strip())
+            # Handle out of bounds case
+            if not (-1 < selected_option < len(options)):
+                selected_option = None
+                print("Input value is out of range, try again")
+        # Handle non-integer case
         except ValueError:
-            print("Input value not an integer, try again")
-        if selected_option >= len(options):
-            selected_option = None
-            print("Input value is out of range, try again")
+            print("Input value not a valid integer, try again")
+    # Return the selected option by name
     return options[selected_option]

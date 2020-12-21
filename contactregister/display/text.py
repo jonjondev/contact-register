@@ -2,7 +2,7 @@
 ContactRegister Text Module
 
 This script defines display methods for the Text format:
-    * display - displays a list of contacts in output text
+    * display_contacts - displays a list of contacts in output text
 
 This script should be imported wherever needed as module.
 """
@@ -11,7 +11,7 @@ from models.Contact import Contact
 from tabulate import tabulate
 
 
-def display(contacts) -> None:
+def display_contacts(contacts) -> None:
     """
     A module function to display contacts as text output
     ...

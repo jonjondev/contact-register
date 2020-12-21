@@ -2,7 +2,8 @@
 ContactRegister HTML Module
 
 This script defines display methods for the HTML format:
-    * display - displays a list of contacts in HTML
+    * display_contacts - displays a list of contacts in HTML
+    * contacts_to_list_items - formats list of contacts as an HTML list
 
 This script should be imported wherever needed as module.
 """
@@ -15,7 +16,7 @@ import webbrowser
 DATA_FILE = "data/contacts.html"
 
 
-def display(contacts) -> None:
+def display_contacts(contacts) -> None:
     """
     A module function to display contacts in HTML, opening the
     generated file in the default web-browser

@@ -2,12 +2,13 @@
 ContactRegister CSV Module
 
 This script defines serialisation methods for the CSV format:
-    * export - exports a list of contacts as a .csv file
+    * export_contacts - exports a list of contacts as a .csv file
+    * import_contacts - imports contacts from a .csv file as a list
 
 This script should be imported wherever needed as module.
 """
 
-import models.Contact
+from models.Contact import Contact
 import csv
 
 
@@ -15,7 +16,7 @@ import csv
 DATA_FILE = "data/contacts.csv"
 
 
-def export(contacts) -> str:
+def export_contacts(contacts) -> str:
     """
     A module function to export contacts to a CSV file
     ...
@@ -32,8 +33,27 @@ def export(contacts) -> str:
     # Open the specified file for writing
     with open(DATA_FILE, 'w', newline='') as file:
         # Set it up for CSV writing
-        wr = csv.writer(file, quoting=csv.QUOTE_ALL)
+        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
         # Write the header row, and then rows for each contact
-        wr.writerow(models.Contact.Contact.supported_search_fields)
-        [wr.writerow(contact.to_list()) for contact in contacts]
+        writer.writerow(Contact.supported_search_fields)
+        [writer.writerow(contact.to_list()) for contact in contacts]
     return DATA_FILE
+
+
+def import_contacts() -> [Contact]:
+    """
+    A module function to import contacts from a CSV file
+    ...
+    Returns
+    -------
+    [Contact]
+        a list of imported contacts
+    """
+    # Open the specified file for reading
+    with open(DATA_FILE, 'r', newline='') as file:
+        # Set it up for CSV reading
+        reader = csv.reader(file, delimiter=',', quotechar='"')
+        # Skip the header row, and read in each entry as a contact
+        next(reader)
+        contacts = [Contact.from_list(row) for row in reader]
+    return contacts

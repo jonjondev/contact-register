@@ -79,3 +79,48 @@ def get_option_selection(options, prompt="Option: ") -> str:
             print("Input value not a valid integer, try again")
     # Return the selected option by name
     return options[selected_option]
+
+
+def parse_query_filters(query) -> [{str: str}]:
+    filters = []
+    for query_filter in [query_field.split("=", 1) for query_field in query.split(",")]:
+        filters.append({"field": query_filter[0].strip(), "pattern": query_filter[1].strip()})
+    return filters
+
+
+class UnknownQueryField(Exception):
+    """Raised when searched query field is unknown"""
+
+    def __init__(self, field_name):
+        """
+        Initialises the class with relevant parameters
+        ...
+        Parameters
+        ----------
+        field_name : str
+            the name of offending field
+        Returns
+        -------
+        Contact
+            a new UnknownQueryField object
+        """
+        self.field = field_name
+
+
+class MalformedQuery(Exception):
+    """Raised when parsed query is malformed"""
+
+    def __init__(self, query):
+        """
+        Initialises the class with relevant parameters
+        ...
+        Parameters
+        ----------
+        query : str
+            the value of the malformed query
+        Returns
+        -------
+        Contact
+            a new MalformedQuery object
+        """
+        self.query = query

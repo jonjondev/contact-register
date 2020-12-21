@@ -1,3 +1,5 @@
+# noinspection PyUnresolvedReferences
+from models import Contact
 from models import NULL_FIELD
 
 
@@ -22,6 +24,10 @@ class Contact:
         returns the object as a dictionary
     to_list()
         returns the object as a list
+    from_dict(contact_dict)
+        returns a dictionary as a contact
+    from_list(contact_list)
+        returns a list as a contact
     """
 
     supported_search_fields = ["name", "address", "phone"]
@@ -80,3 +86,47 @@ class Contact:
             a list of object field values
         """
         return [self.name, self.address, self.phone]
+
+    @staticmethod
+    def from_dict(contact_dict) -> Contact:
+        """
+        Returns a contact object from dictionary values
+
+        Assumes dictionary format to be:
+        {
+            "name": "<contact name>",
+            "address": "<contact address>",
+            "phone": "<contact phone>",
+        }
+        ...
+        Parameters
+        ----------
+        contact_dict : {str:str}
+            a dictionary object containing contact data
+        ...
+        Returns
+        -------
+        Contact
+            a newly created contact object
+        """
+        return Contact(contact_dict["name"], contact_dict["address"], contact_dict["phone"])
+
+    @staticmethod
+    def from_list(contact_list) -> Contact:
+        """
+        Returns a contact object from list values
+
+        Assumes list format to be:
+        ["<contact name>", "<contact address>", "<contact phone>"]
+        ...
+        Parameters
+        ----------
+        contact_list : [str]
+            a list object containing contact data
+        ...
+        Returns
+        -------
+        Contact
+            a newly created contact object
+        """
+        return Contact(contact_list[0], contact_list[1], contact_list[2])

@@ -1,6 +1,5 @@
 # noinspection PyUnresolvedReferences
-from models import Contact
-from models import NULL_FIELD
+from models import Contact, NULL_FIELD
 
 
 class Contact:

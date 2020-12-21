@@ -9,11 +9,12 @@ This script should be imported wherever needed as module.
 """
 
 from models.Contact import Contact
+from pathlib import Path
 import csv
 
 
 # Define module constants
-DATA_FILE = "data/contacts.csv"
+DATA_FILE = Path(__file__).parent / "../../data/contacts.csv"
 
 
 def export_contacts(contacts) -> str:

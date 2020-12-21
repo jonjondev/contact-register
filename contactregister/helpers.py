@@ -101,7 +101,7 @@ class UnknownQueryField(Exception):
             the name of offending field
         Returns
         -------
-        Contact
+        UnknownQueryField
             a new UnknownQueryField object
         """
         self.field = field_name
@@ -120,7 +120,26 @@ class MalformedQuery(Exception):
             the value of the malformed query
         Returns
         -------
-        Contact
+        MalformedQuery
             a new MalformedQuery object
         """
         self.query = query
+
+
+class NonexistentFile(Exception):
+    """Raised when attempting to import a nonexistent file"""
+
+    def __init__(self, filepath):
+        """
+        Initialises the class with relevant parameters
+        ...
+        Parameters
+        ----------
+        filepath : str
+            the missing filepath
+        Returns
+        -------
+        NonexistentFile
+            a new NonexistentFile object
+        """
+        self.filepath = filepath

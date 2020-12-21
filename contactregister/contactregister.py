@@ -20,15 +20,15 @@ interactive session mode for CLI operation using the following function:
 If the file is invoked directly (as main) it will launch the interactive
 mode by default.
 """
-import sys
-from helpers import MalformedQuery
-from helpers import UnknownQueryField
+
+from helpers import MalformedQuery, UnknownQueryField, NonexistentFile
 from models.Contact import Contact
 import serialisation
-import importlib
-import fnmatch
 import display
 import helpers
+import importlib
+import fnmatch
+import sys
 
 
 # Initialise contact list
@@ -152,8 +152,11 @@ def import_contacts(import_format) -> [Contact]:
     [Contact]
         a list of the newly imported contacts
     """
-    # Dynamically import the specified serialisation format module and run its import method
-    new_contacts = importlib.import_module(f'serialisation.{import_format}').import_contacts()
+    try:
+        # Dynamically import the specified serialisation format module and run its import method
+        new_contacts = importlib.import_module(f'serialisation.{import_format}').import_contacts()
+    except FileNotFoundError:
+        raise NonexistentFile(f'data/contacts.{import_format}')
     # Add the new contacts to current contacts and return those newly created ones
     contacts.extend(new_contacts)
     return new_contacts
@@ -251,9 +254,14 @@ def run_interactive_session():
             import_formats = serialisation.get_formats()
             helpers.display_command_options(import_formats, "Import format options:")
             selected_format = helpers.get_option_selection(import_formats, prompt="Format: ")
-            # Import all contacts from the selected format
-            new_contacts = import_contacts(selected_format)
-            print(f'Successfully imported {len(new_contacts)} contacts')
+            try:
+                # Import all contacts from the selected format
+                new_contacts = import_contacts(selected_format)
+                print(f'Successfully imported {len(new_contacts)} contacts')
+            except NonexistentFile:
+                # Handle bad query case
+                _type, value, _traceback = sys.exc_info()
+                print(f'File "{value.filepath}" could not be found')
 
         # VIEW HELP
         elif command in {"help", "?"}:

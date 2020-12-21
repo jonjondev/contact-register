@@ -8,11 +8,12 @@ This script defines serialisation methods for the JSON format:
 This script should be imported wherever needed as module.
 """
 from models.Contact import Contact
+from pathlib import Path
 import json
 
 
 # Define module constants
-DATA_FILE = "data/contacts.json"
+DATA_FILE = Path(__file__).parent / "../../data/contacts.json"
 
 
 def export_contacts(contacts) -> str:

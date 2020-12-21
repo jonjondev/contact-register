@@ -10,10 +10,11 @@ This script should be imported wherever needed as module.
 
 import os
 import webbrowser
+from pathlib import Path
 
 
 # Define module constants
-DATA_FILE = "data/contacts.html"
+DATA_FILE = Path(__file__).parent / "../../data/contacts.html"
 
 
 def display_contacts(contacts) -> None:

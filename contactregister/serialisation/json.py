@@ -7,9 +7,12 @@ This script defines serialisation methods for the JSON format:
 
 This script should be imported wherever needed as module.
 """
+
 from models.Contact import Contact
 from pathlib import Path
+import helpers
 import json
+import os
 
 
 # Define module constants
@@ -30,7 +33,8 @@ def export_contacts(contacts) -> str:
     str
         the name of the export file
     """
-    # Open the specified file for writing
+    # Try create the file directory and open the specified file for writing
+    helpers.try_create_dir(os.path.dirname(DATA_FILE))
     with open(DATA_FILE, 'w', newline='') as file:
         # Convert the contacts to dictionaries and dump them to the file as JSON
         json.dump([contact.to_dict() for contact in contacts], file, indent=4)

@@ -90,8 +90,8 @@ def search_contacts(query) -> [Contact]:
     [Contact]
         a list of matching contacts
     """
-    # Format and sanitise the provided query into a structured list of filters
     try:
+        # Format and sanitise the provided query into a structured list of QueryFilters
         filters = helpers.parse_query_filters(query)
     except IndexError:
         # Handle bad query case
@@ -99,11 +99,11 @@ def search_contacts(query) -> [Contact]:
     # Iteratively filter through all contacts for each query filter specified
     matches = contacts
     for f in filters:
-        if f["field"] not in Contact.supported_search_fields:
+        if f.field not in Contact.supported_search_fields:
             # Handle unknown fields case
-            raise UnknownQueryField(f["field"])
+            raise UnknownQueryField(f.field)
         # Filter previously matched contacts on a pattern/field basis
-        matches = [match for match in matches if fnmatch.fnmatch(getattr(match, f["field"]), f["pattern"])]
+        matches = [match for match in matches if fnmatch.fnmatch(getattr(match, f.field), f.pattern)]
     return matches
 
 

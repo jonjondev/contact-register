@@ -73,7 +73,7 @@ For further details on implementing custom formats, please read through the form
     |     |
     |     |- helpers.py <- application helper functions and classes
     |
-    |-(requirements.txt) <- Python package dependency list
+    |- requirements.txt <- Python package dependency list
 ```
 
 ## Testing

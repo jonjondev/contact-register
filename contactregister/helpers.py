@@ -5,6 +5,7 @@ This script contains various helper functions for the contactregister
 CLI program and should be imported wherever needed as module.
 """
 
+import errno
 import os
 
 
@@ -81,11 +82,67 @@ def get_option_selection(options, prompt="Option: ") -> str:
     return options[selected_option]
 
 
-def parse_query_filters(query) -> [{str: str}]:
+class QueryFilter:
+    """A container class for query data"""
+
+    def __init__(self, field, pattern):
+        """
+        Initialises the class with relevant parameters
+        ...
+        Parameters
+        ----------
+        field : str
+            the field on which to perform the query
+        pattern : str
+            the pattern to perform the query with
+        Returns
+        -------
+        QueryFilter
+            a new QueryFilter object
+        """
+        self.field = field.strip()
+        self.pattern = pattern.strip()
+
+
+def parse_query_filters(query) -> [QueryFilter]:
+    """
+    A helper function to parse a query string as a list of
+    query filter objects
+    ...
+    Parameters
+    ----------
+    query : str
+        a comma-separated query string in the format of field=name
+    ...
+    Returns
+    -------
+    [QueryFilter]
+        a list of sanitised QueryFilter objects
+    """
     filters = []
+    # Split the queries by comma into a list of lists split an equals sign
     for query_filter in [query_field.split("=", 1) for query_field in query.split(",")]:
-        filters.append({"field": query_filter[0].strip(), "pattern": query_filter[1].strip()})
+        # Create a new QueryFilter object from the field and pattern on each query
+        filters.append(QueryFilter(query_filter[0], query_filter[1]))
     return filters
+
+
+def try_create_dir(directory_path) -> None:
+    """
+    A helper function to try create a directory
+    ...
+    Parameters
+    ----------
+    directory_path : str
+        the string directory path to try create
+    """
+    try:
+        # Create the specified directory
+        os.makedirs(directory_path)
+    except OSError as e:
+        # Handle file existing case
+        if e.errno != errno.EEXIST:
+            raise
 
 
 class UnknownQueryField(Exception):

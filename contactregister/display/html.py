@@ -8,9 +8,10 @@ This script defines display methods for the HTML format:
 This script should be imported wherever needed as module.
 """
 
-import os
-import webbrowser
 from pathlib import Path
+import webbrowser
+import helpers
+import os
 
 
 # Define module constants
@@ -27,7 +28,8 @@ def display_contacts(contacts) -> None:
     contacts : [Contact]
         a list of contact objects to display
     """
-    # Open the specified file for writing
+    # Try create the file directory and open the specified file for writing
+    helpers.try_create_dir(os.path.dirname(DATA_FILE))
     with open(DATA_FILE, 'w', newline='') as file:
         # Write the structure of the HTML file populated with contacts
         file.write('<html>\n'

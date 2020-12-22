@@ -10,7 +10,9 @@ This script should be imported wherever needed as module.
 
 from models.Contact import Contact
 from pathlib import Path
+import helpers
 import csv
+import os
 
 
 # Define module constants
@@ -31,7 +33,8 @@ def export_contacts(contacts) -> str:
     str
         the name of the export file
     """
-    # Open the specified file for writing
+    # Try create the file directory and open the specified file for writing
+    helpers.try_create_dir(os.path.dirname(DATA_FILE))
     with open(DATA_FILE, 'w', newline='') as file:
         # Set it up for CSV writing
         writer = csv.writer(file, quoting=csv.QUOTE_ALL)

@@ -3,6 +3,7 @@ from models.Contact import Contact
 from display import html
 import contactregister
 import unittest
+import helpers
 import json
 import glob
 import csv
@@ -191,11 +192,13 @@ class ImportContacts(ContactRegisterTestCase):
 
     @staticmethod
     def create_json_file_with(contacts):
+        helpers.try_create_dir("../data/")
         with open("../data/contacts.json", 'w', newline='') as file:
             json.dump([contact.to_dict() for contact in contacts], file, indent=4)
 
     @staticmethod
     def create_csv_file_with(contacts):
+        helpers.try_create_dir("../data/")
         with open("../data/contacts.csv", 'w', newline='') as file:
             writer = csv.writer(file, quoting=csv.QUOTE_ALL)
             writer.writerow(Contact.supported_search_fields)

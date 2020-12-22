@@ -17,7 +17,7 @@ The project currently supports **serialisation to CSV & JSON**, and **displaying
 
 ## Requirements & Setup
 
-The project requires Python 3 and the [`tabulate`](https://pypi.org/project/tabulate/) (v0.8+) package installed on your machine.
+The project requires Python 3.6 or greater and the [`tabulate`](https://pypi.org/project/tabulate/) (v0.8.x) package installed on your machine.
 This is specified in [`requirements.txt`](requirements.txt) and can be installed using the [pip](https://pypi.org/project/pip/) package manager using the following command:
 
 ```console

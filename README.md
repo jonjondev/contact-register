@@ -1,6 +1,6 @@
 # ContactRegister
 
-![unittest](https://github.com/J-Mo63/contact-register/workflows/unittest/badge.svg)
+![unittest](https://github.com/jonjondev/contact-register/workflows/unittest/badge.svg)
 
 ContactRegister is a CLI application for managing contact lists across multiple formats, including text, HTML, CSV, and JSON.
 
